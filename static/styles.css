@@ -1,0 +1,37 @@
+img {
+    padding: 10px;
+}
+
+.selected {
+    background-color: green;
+}
+
+.img-view {
+    max-width: 600px;
+}
+
+#map {
+  height: 100%;
+}
+
+#pac-input {
+    margin: 10px;
+    width: 200px;
+}
+
+#download {
+    margin: 10px;
+}
+
+#dropdown {
+    max-width: 200px;
+    margin: 10px;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

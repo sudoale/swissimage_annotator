@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="{{ url_for('static', filename='js/download.js') }}"></script>
+    <div class="text-center py-2">
+        <a href="{{ up }}" class="btn btn-primary mx-auto" role="button">Up</a>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+                <a href="{{ left }}" class="btn btn-primary mx-auto" role="button">Left</a>
+            </div>
+            <div class="col-sm">
+              <img src="{{ coords }}" class="img-fluid">
+            </div>
+            <div class="col-sm">
+              <a href="{{ right }}" class="btn btn-primary mx-auto align-middle" role="button">Right</a>
+            </div>
+          </div>
+        </div>
+        <a href="{{ down }}" class="btn btn-primary mx-auto" role="button">Down</a>
+    </div>
+
+
+    <div class="text-center py-5">
+        <button type="button" class="btn btn-primary mx-auto" onclick="download({{x}},{{y}})">Download</button>
+    </div>
+{% endblock %}

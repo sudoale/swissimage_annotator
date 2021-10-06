@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="text-center py-2">
+        <button type="button" class="btn btn-primary mx-auto" onclick="annotateImages()">Next</button>
+    </div>
+    <div class="img-view mx-auto">
+        <div class="container-sm">
+            {% for i in range(grid_size) %}
+                <div class="row">
+                {% for j in range(grid_size) %}
+                    <div class="col-sm">
+                      <img src="{{ images[(i*grid_size)+j] }}" class="img-fluid">
+                    </div>
+                {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

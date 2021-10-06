@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block ressources %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="{{ url_for('static', filename='js/gmaps.js')}}"></script>
+{% endblock %}
+{% block content %}
+    <input
+      id="pac-input"
+      class="controls form-control"
+      type="text"
+      placeholder="Search Box"
+    />
+
+    <select id="dropdown" class="form-select" aria-label="Default select example">
+      <option selected value="default">Select a project</option>
+        {% for project in projects %}
+            <option value="{{project}}">{{project}}</option>
+        {% endfor %}}
+    </select>
+
+    <button id="download" type="button" class="btn btn-primary">Download</button>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key={{gapi_key}}&callback=initMap&libraries=places&v=weekly"
+      async
+    ></script>
+{% endblock %}
