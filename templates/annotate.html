@@ -3,6 +3,7 @@
     <div class="text-center py-2">
         <button type="button" class="btn btn-primary mx-auto" onclick="annotateImages()">Next</button>
     </div>
+    <p id="projectName" style="display: none;">{{ project }}</p>
     <div class="img-view mx-auto">
         <div class="container-sm">
             {% for i in range(grid_size) %}

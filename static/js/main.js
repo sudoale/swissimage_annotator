@@ -4,21 +4,24 @@ $(document).ready(function(){
     });
 });
 
+const projectNameHolder = document.getElementById("projectName");
+
 function annotateImages(){
     result = [];
+
     $("img").each(function(){
         var img_state = {'src': $(this).attr('src'),
                          'selected': $(this).attr("class").includes('selected')};
         result.push(img_state);
     });
     sendImageData = $.ajax({
-          url: "/annotate",
+          url: "/" + projectNameHolder.textContent + "/annotate",
           type: "post",
           contentType: "application/json",
           data: JSON.stringify(result),
           success: function(data){
             $.get({
-                  url: "/annotate/next",
+                  url: "/" + projectNameHolder.textContent + "/annotate/next",
                   success: function(data){
                     console.log(data);
                     $("img").each(function(i, element){

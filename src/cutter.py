@@ -35,7 +35,7 @@ def crop_image(image_name, cuts_per_axis, project):
 def crop_all_images(project):
     images = get_all_images(IMG_DIR / project, 'tif')
     for img_name in images:
-        crop_image(img_name, 20)
+        crop_image(img_name, 20, project)
 
 
 if __name__ == '__main__':

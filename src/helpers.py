@@ -61,8 +61,9 @@ def _move_image(img_name, source, destination):
 
 
 def get_gapi_key(fn='credentials.json'):
-    if (Path(__file__).parent.parent / fn).exists():
-        credentials = json.load(open(fn))
+    credentials_path = Path(__file__).parent.parent / fn
+    if credentials_path.exists():
+        credentials = json.load(open(credentials_path))
         return credentials['key']
     else:
         return ''

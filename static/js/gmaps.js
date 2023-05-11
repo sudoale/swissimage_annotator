@@ -72,10 +72,11 @@ function initMap() {
 
   downloadButton.addEventListener("click", () => {
     console.log(map.getZoom());
-    const project_select = document.getElementById("dropdown");
-    let request_data = map.getBounds(true);
+    const project_select = document.getElementById("projectDropdown");
+    let request_data = JSON.parse(JSON.stringify(map.getBounds(true)));
+
     if (project_select.value !== 'default') {
-      request_data.project = project_select.value;
+      request_data.project_name = project_select.value;
       let request = $.ajax({
         url: "/download",
         type: "post",
@@ -88,6 +89,7 @@ function initMap() {
           map.setZoom(14);
         } else {
           console.log("it worked");
+          window.open('/' +  project_select.value + '/annotate', '_self');
         }
       });
     }
