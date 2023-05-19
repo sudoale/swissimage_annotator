@@ -24,6 +24,9 @@ function annotateImages(){
                   url: "/" + projectNameHolder.textContent + "/annotate/next",
                   success: function(data){
                     console.log(data);
+                    if(!data.images){
+                        window.open('/view/2758000/1191000', '_self');
+                      }
                     $("img").each(function(i, element){
                         $(this).attr('src', data.images[i])
                         console.log(data.images[i]);

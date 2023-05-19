@@ -61,7 +61,7 @@ def annotate(project_name):
 def annotate_image(project_name):
     images = get_next_image_batch(IMAGE_WIDTH * 4, project_name)
     if not images:
-        return redirect('/view/2758000/1191000')
+        return jsonify({'images': False})
     return jsonify(images=images)
 
 
