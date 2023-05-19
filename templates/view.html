@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <script src="{{ url_for('static', filename='js/download.js') }}"></script>
+    <select id="projectDropdown" class="form-select" aria-label="Default select example">
+      <option selected value="default">Select a project</option>
+        {% for project in projects %}
+            <option value="{{project}}">{{project}}</option>
+        {% endfor %}}
+    </select>
+
     <div class="text-center py-2">
         <a href="{{ up }}" class="btn btn-primary mx-auto" role="button">Up</a>
         <div class="container">

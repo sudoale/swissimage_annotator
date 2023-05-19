@@ -15,6 +15,7 @@ from src.helpers import (get_all_images,
                          get_gapi_key)
 from src.downloader import download_tif
 from src.cutter import crop_all_images
+from config import IMAGE_WIDTH
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD']=True
@@ -28,9 +29,19 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/find')
+@app.route('/find_google')
 def find():
-    return render_template('find.html', projects=get_projects(), gapi_key=get_gapi_key())
+    return render_template('find_google.html', projects=get_projects(), gapi_key=get_gapi_key())
+
+
+@app.route('/find')
+def find_osm():
+    return render_template('find_leaflet.html', projects=get_projects())
+
+
+@app.route('/annotate')
+def annotate_project_selection():
+    return render_template('annotate_project_selection.html', projects=get_projects())
 
 
 @app.route('/<project_name>/annotate', methods=['GET', 'POST'])
@@ -40,13 +51,18 @@ def annotate(project_name):
         order_images(request_data, IMG_DIR / project_name / 'crops')
         return 'Annotated'
     else:
-        images = get_next_image_batch(200, project_name)
+        images = get_next_image_batch(IMAGE_WIDTH * 4, project_name) # requesting 16 images (4*4)
+        if not images:
+            return redirect('/view/2758000/1191000')
         return render_template('annotate.html', images=images, project=project_name, grid_size=int(math.sqrt(len(images))))
 
 
 @app.route('/<project_name>/annotate/next')
 def annotate_image(project_name):
-    return jsonify(images=get_next_image_batch(200, project_name))
+    images = get_next_image_batch(IMAGE_WIDTH * 4, project_name)
+    if not images:
+        return redirect('/view/2758000/1191000')
+    return jsonify(images=images)
 
 
 def get_next_image_batch(radius, project):
@@ -55,7 +71,7 @@ def get_next_image_batch(radius, project):
         images = get_image_by_radius(all_crops[0], radius)
         return [f'/static/data/{project}/crops/{image}' for image in images]
     else:
-        return ['No images found']
+        return []
 
 
 @app.route('/view/<x>/<y>')
@@ -67,14 +83,13 @@ def view(x,y):
     up = f'/view/{x}/{int(y) + 1000}'
     down = f'/view/{x}/{int(y) - 1000}'
     return render_template('view.html', coords=coords,
-                           left=left, right=right, up=up, down=down, x=x, y=y)
+                           left=left, right=right, up=up, down=down, x=x, y=y, projects=get_projects())
 
 
 def valid_bounds(x_min, x_max, y_min, y_max):
     x_range = x_max - x_min
     y_range = y_max - y_min
-    print(x_range)
-    print(y_range)
+
     if x_range > 0.1:
         return False
     elif y_range > 0.1:
@@ -86,17 +101,30 @@ def valid_bounds(x_min, x_max, y_min, y_max):
 def download():
     request_data = request.json
     project_name = request_data['project_name']
-    y_min = round(request_data['south'], 2)
-    y_max = round(request_data['north'], 2)
-    x_min = round(request_data['west'], 2)
-    x_max = round(request_data['east'], 2)
-    if valid_bounds(x_min, x_max, y_min, y_max):
-        download_tif(x_min, x_max, y_min, y_max, IMG_DIR / project_name)
-        crop_all_images(project_name)
-        return jsonify({'success': True,
-                        'message': 'Success'})
-    return jsonify({'success': False,
-                    'message': 'Too big map extent. Zoom closer to the area of interest.'})
+    map_type = request_data['map_type']
+    if map_type in ['google', 'leaflet']:
+        y_min = round(request_data['south'], 2)
+        y_max = round(request_data['north'], 2)
+        x_min = round(request_data['west'], 2)
+        x_max = round(request_data['east'], 2)
+        crs = 4326
+        if not valid_bounds(x_min, x_max, y_min, y_max):
+            return jsonify({'success': False,
+                            'message': 'Too big map extent. Zoom closer to the area of interest.'})
+    elif map_type == 'swisstopo':
+        y_min = request_data['y']
+        y_max = y_min + 1000
+        x_min = request_data['x']
+        x_max = x_min + 1000
+        crs = 2056
+    else:
+        return jsonify({'success': False,
+                        'message': 'Unknown map type provided. Please use the given map types.'})
+
+    download_tif(x_min, x_max, y_min, y_max, IMG_DIR / project_name, crs)
+    crop_all_images(project_name)
+    return jsonify({'success': True,
+                    'message': 'Success'})
 
 
 @app.route('/create_project', methods=['POST'])
@@ -112,4 +140,4 @@ def create_project():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5555)

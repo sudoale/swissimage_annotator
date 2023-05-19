@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="{{ url_for('static', filename='js/download.js') }}"></script>
+
+    <div class="dropdown py-5 text-center">
+      <a class="btn btn-primary dropdown-toggle mx-auto" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+       Select a project
+      </a>
+
+      <ul class="dropdown-menu">
+        {% for project in projects %}
+                <li><a class="dropdown-item" href="/{{project}}/annotate">{{project}}</a></li>
+            {% endfor %}
+      </ul>
+    </div>
+
+{% endblock %}

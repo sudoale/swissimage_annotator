@@ -2,12 +2,14 @@ import cv2
 from pathlib import Path
 
 from src.helpers import get_all_images
+from config import IMAGE_WIDTH
 
 ROOT = Path(__file__).parent.parent
 IMG_DIR = ROOT / 'static' / 'data'
 
 
 def crop_image(image_name, cuts_per_axis, project):
+    print(cuts_per_axis)
     coordinates = image_name.split('.')[0][-9:].split('-')
     start_x = int(coordinates[0]) * 1000
     start_y = int(coordinates[1]) * 1000
@@ -20,6 +22,8 @@ def crop_image(image_name, cuts_per_axis, project):
     image_height = image.shape[1]
     cropped_width = int(image_width / cuts_per_axis)
     cropped_height = int(image_height / cuts_per_axis)
+    print(image_height)
+    print(cropped_height)
 
     for i in range(cuts_per_axis):
         for j in range(cuts_per_axis):
@@ -34,8 +38,9 @@ def crop_image(image_name, cuts_per_axis, project):
 
 def crop_all_images(project):
     images = get_all_images(IMG_DIR / project, 'tif')
+    cuts_per_image = int(1000 / IMAGE_WIDTH)
     for img_name in images:
-        crop_image(img_name, 20, project)
+        crop_image(img_name, cuts_per_image, project)
 
 
 if __name__ == '__main__':

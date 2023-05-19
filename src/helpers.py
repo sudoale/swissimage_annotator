@@ -4,6 +4,8 @@ from pathlib import Path
 
 from pyproj import Proj, itransform
 
+from config import IMAGE_WIDTH
+
 
 ROOT = Path(__file__).parent.parent
 
@@ -28,8 +30,8 @@ def get_image_by_radius(image, radius, i_format='png'):
     start_x = int(coords[0])
     start_y = int(coords[1])
     result = []
-    for x in range(start_x, start_x + radius, 50):
-        for y in range(start_y, start_y + radius, 50):
+    for x in range(start_x, start_x + radius, IMAGE_WIDTH):
+        for y in range(start_y, start_y + radius, IMAGE_WIDTH):
             result.append(f'{x}_{y}.{i_format}')
     return result
 

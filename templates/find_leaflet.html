@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block ressources %}
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+     crossorigin=""></script>
+    <script src="{{ url_for('static', filename='js/leafletmaps.js')}}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <select id="projectDropdownLeaflet" class="form-select" aria-label="Default select example">
+                  <option selected value="default">Select a project</option>
+                    {% for project in projects %}
+                        <option value="{{project}}">{{project}}</option>
+                    {% endfor %}}
+                </select>
+            </div>
+            <div class="col-6">
+                <button id="downloadLeaflet" type="button" class="btn btn-primary">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+    <script>
+        initMap();
+    </script>
+{% endblock %}

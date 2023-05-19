@@ -26,7 +26,6 @@ def download_tif(x_min=None, x_max=None, y_min=None, y_max=None, data_dir=None, 
         query += '?bbox=' + ','.join([str(x_min), str(y_min), str(x_max), str(y_max)])
 
     url = BASE_URL + query
-    print(url)
     response = requests.get(url)
     data = json.loads(response.content.decode('utf-8'))
     for feature in data['features']:
@@ -38,5 +37,5 @@ def download_tif(x_min=None, x_max=None, y_min=None, y_max=None, data_dir=None, 
 
 
 if __name__ == '__main__':
-    download_tif(9.40, 9.41, 47.10, 47.11)
+    download_tif(2752000, 2753000, 1212000, 1213000, crs=2056)
 

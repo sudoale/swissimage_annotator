@@ -7,12 +7,10 @@ function initMap() {
   });
 
   const input = document.getElementById("pac-input");
-  const dropDown = document.getElementById("dropdown");
   const downloadButton = document.getElementById("download");
   const searchBox = new google.maps.places.SearchBox(input);
 
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(dropDown);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(downloadButton);
   // Bias the SearchBox results towards current map's viewport.
   map.addListener("bounds_changed", () => {
@@ -77,6 +75,7 @@ function initMap() {
 
     if (project_select.value !== 'default') {
       request_data.project_name = project_select.value;
+      request_data.map_type = 'google';
       let request = $.ajax({
         url: "/download",
         type: "post",
