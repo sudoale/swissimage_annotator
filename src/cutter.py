@@ -9,7 +9,7 @@ IMG_DIR = ROOT / 'static' / 'data'
 
 
 def crop_image(image_name, cuts_per_axis, project):
-    print(cuts_per_axis)
+    print(f'Starting to cut image {image_name}')
     coordinates = image_name.split('.')[0][-9:].split('-')
     start_x = int(coordinates[0]) * 1000
     start_y = int(coordinates[1]) * 1000
@@ -22,8 +22,6 @@ def crop_image(image_name, cuts_per_axis, project):
     image_height = image.shape[1]
     cropped_width = int(image_width / cuts_per_axis)
     cropped_height = int(image_height / cuts_per_axis)
-    print(image_height)
-    print(cropped_height)
 
     for i in range(cuts_per_axis):
         for j in range(cuts_per_axis):
@@ -44,4 +42,4 @@ def crop_all_images(project):
 
 
 if __name__ == '__main__':
-    crop_all_images()
+    crop_all_images('zebra')

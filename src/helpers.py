@@ -21,7 +21,8 @@ def convert_coordinates(coordinates, source_crs, target_crs, swap_coordinates=Fa
 
 def get_all_images(image_dir, i_format='png'):
     images = glob.glob(str(image_dir / f'*.{i_format}'))
-    images = [img_path.split('\\')[-1] for img_path in images]
+    images = [Path(img_path).name for img_path in images]
+    print(images)
     return sorted(images)
 
 
