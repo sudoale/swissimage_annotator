@@ -38,7 +38,7 @@ def get_image_by_radius(image, radius, i_format='png'):
 
 def get_projects():
     project_dir = ROOT / 'static' / 'data'
-    return [str(dir).split("\\")[-1] for dir in project_dir.iterdir() if dir.is_dir()]
+    return [x.stem for x in project_dir.iterdir() if x.is_dir()]
 
 
 def order_images(images, img_dir):

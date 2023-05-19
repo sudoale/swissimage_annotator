@@ -9,7 +9,7 @@
 
       <ul class="dropdown-menu">
         {% for project in projects %}
-                <li><a class="dropdown-item" href="/{{project}}/annotate">{{project}}</a></li>
+                <li><a class="dropdown-item" href="{{url_for('annotate', project_name=project)}}">{{project}}</a></li>
             {% endfor %}
       </ul>
     </div>
