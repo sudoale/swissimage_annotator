@@ -31,6 +31,7 @@ function annotateImages(){
                         $(this).attr('src', data.images[i])
                         console.log(data.images[i]);
                     });
+                    $("#annotationButton").text('Next (' + data.remaining_image_batches + ')')
                   }
             });
           }

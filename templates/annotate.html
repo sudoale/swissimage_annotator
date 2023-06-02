@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="text-center py-2">
-        <button type="button" class="btn btn-primary mx-auto" onclick="annotateImages()">Next</button>
+        <button type="button" class="btn btn-primary mx-auto" id="annotationButton" onclick="annotateImages()">Next ({{ remaining_image_batches }})</button>
     </div>
     <p id="projectName" style="display: none;">{{ project }}</p>
     <div class="img-view mx-auto">

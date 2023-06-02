@@ -54,7 +54,13 @@ def annotate(project_name):
         images = get_next_image_batch(IMAGE_WIDTH * 4, project_name) # requesting 16 images (4*4)
         if not images:
             return redirect('/view/2758000/1191000')
-        return render_template('annotate.html', images=images, project=project_name, grid_size=int(math.sqrt(len(images))))
+
+        remaining_image_batches = get_no_remaining_image_batches(images, project_name)
+        return render_template('annotate.html',
+                               images=images,
+                               remaining_image_batches=remaining_image_batches,
+                               project=project_name,
+                               grid_size=int(math.sqrt(len(images))))
 
 
 @app.route('/<project_name>/annotate/next')
@@ -62,16 +68,8 @@ def annotate_image(project_name):
     images = get_next_image_batch(IMAGE_WIDTH * 4, project_name)
     if not images:
         return jsonify({'images': False})
-    return jsonify(images=images)
-
-
-def get_next_image_batch(radius, project):
-    all_crops = get_all_images(IMG_DIR / project / 'crops')
-    if all_crops:
-        images = get_image_by_radius(all_crops[0], radius)
-        return [f'/static/data/{project}/crops/{image}' for image in images]
-    else:
-        return []
+    remaining_image_batches = get_no_remaining_image_batches(images, project_name)
+    return jsonify(images=images, remaining_image_batches=remaining_image_batches)
 
 
 @app.route('/view/<x>/<y>')
@@ -89,6 +87,21 @@ def view(x, y):
                            x=x,
                            y=y,
                            projects=get_projects())
+
+
+def get_next_image_batch(radius, project):
+    all_crops = get_all_images(IMG_DIR / project / 'crops')
+    if all_crops:
+        images = get_image_by_radius(all_crops[0], radius)
+        return [f'/static/data/{project}/crops/{image}' for image in images]
+    else:
+        return []
+
+
+def get_no_remaining_image_batches(images, project_name):
+    images_to_annotate_dir = Path(__file__).parent / 'static' / 'data' / project_name / 'crops'
+    remaining_image_batches = int(len(list(images_to_annotate_dir.iterdir())) / len(images))
+    return remaining_image_batches
 
 
 def process_coordinate_input(x: float, y: float):
