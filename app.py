@@ -12,7 +12,7 @@ from src.helpers import (get_all_images,
                          get_image_by_radius,
                          order_images,
                          get_projects,
-                         get_gapi_key)
+                         get_gapi_key, convert_coordinates)
 from src.downloader import download_tif
 from src.cutter import crop_all_images
 from config import IMAGE_WIDTH
@@ -75,15 +75,29 @@ def get_next_image_batch(radius, project):
 
 
 @app.route('/view/<x>/<y>')
-def view(x,y):
+def view(x, y):
+    x, y = process_coordinate_input(float(x), float(y))
+
     base_url = 'https://wms.geo.admin.ch/?service=WMS&version=1.3.0&request=GetMap&width=250&height=250&styles=&layers=ch.swisstopo.images-swissimage&format=image/png&crs=EPSG:2056&BBOX='
-    coords = f'{base_url}{x},{y},{int(x)+1000},{int(y)+1000}'
-    left = f'/view/{int(x)-1000}/{y}'
-    right = f'/view/{int(x) + 1000}/{y}'
-    up = f'/view/{x}/{int(y) + 1000}'
-    down = f'/view/{x}/{int(y) - 1000}'
-    return render_template('view.html', coords=coords,
-                           left=left, right=right, up=up, down=down, x=x, y=y, projects=get_projects())
+
+    return render_template('view.html',
+                           coords=f'{base_url}{x},{y},{x+1000},{y+1000}',
+                           left=f'/view/{x-1000}/{y}',
+                           right=f'/view/{x + 1000}/{y}',
+                           up=f'/view/{x}/{y + 1000}',
+                           down=f'/view/{x}/{y - 1000}',
+                           x=x,
+                           y=y,
+                           projects=get_projects())
+
+
+def process_coordinate_input(x: float, y: float):
+    # Allowing coordinates from google maps
+    if (x <= 180) and (y <= 90):
+        x, y = convert_coordinates([[x, y]], 4326, 2056)[0]
+    x = round(x)
+    y = round(y)
+    return x, y
 
 
 def valid_bounds(x_min, x_max, y_min, y_max):
