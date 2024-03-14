@@ -4,8 +4,16 @@ This project was crated for tasks of annotating image data from https://www.swis
 
 # Setup
 
-## Create conda environment
-conda create --name swissimage --file requirements.txt
+## Create environment
+
+### conda env
+conda env create -f environment.yml
+
+### venv
+python -m venv venv
+venv/Scripts/activate (Windows)
+pip install -r requirements.txt
+
 
 ## Run the project
 python app.py

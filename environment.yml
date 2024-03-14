@@ -1,0 +1,11 @@
+name: swissimage_test
+channels:
+  - defaults
+dependencies:
+  - pip
+  - flask
+  - pillow==8.1.2
+  - requests
+  - pyproj==2.6.1.post1
+  - pip:
+    - opencv-python==4.5.1.48
