@@ -6,8 +6,10 @@ This project was crated for tasks of annotating image data from https://www.swis
 
 ## Docker
 
+```bash
 docker build -t swissimage .
 docker run -p 5555:5555 -v $(pwd)/static/data:/app/static/data swissimage
+```
 
 ## Local
 
