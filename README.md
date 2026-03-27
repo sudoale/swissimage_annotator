@@ -4,12 +4,19 @@ This project was crated for tasks of annotating image data from https://www.swis
 
 # Setup
 
-## Create environment
+## Docker
 
-### conda env
+docker build -t swissimage .
+docker run -p 5555:5555 -v $(pwd)/static/data:/app/static/data swissimage
+
+## Local
+
+### Create environment
+
+#### conda env
 conda env create -f environment.yml
 
-### venv
+#### venv
 python -m venv venv
 
 venv/Scripts/activate (Windows) / source venv/bin/activate (Mac/Linux)
@@ -17,7 +24,7 @@ venv/Scripts/activate (Windows) / source venv/bin/activate (Mac/Linux)
 pip install -r requirements.txt
 
 
-## Run the project
+### Run the project
 python app.py
 
 ## Workflow
