@@ -6,7 +6,6 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 from flask import redirect
-from flask import url_for
 
 from src.helpers import (get_all_images,
                          get_image_by_radius,
@@ -26,7 +25,8 @@ IMG_DIR.mkdir(exist_ok=True)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    projects = get_projects()
+    return render_template('index.html', projects=projects)
 
 
 @app.route('/find_google')
@@ -166,5 +166,18 @@ def create_project():
                     'message': 'Project created!'})
 
 
+@app.route('/crop_project/<project_name>', methods=['POST'])
+def crop_project(project_name):
+    """
+    Manually trigger cropping for all .tif files in the given project.
+    """
+    try:
+        from src.cutter import crop_all_images
+        crop_all_images(project_name)
+        return jsonify({'success': True, 'message': f'Cropping completed for project "{project_name}".'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555)
+    
