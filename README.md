@@ -23,7 +23,19 @@ conda env create -f environment.yml
 
 ```bash
 python -m venv venv
-venv/Scripts/activate (Windows) / source venv/bin/activate (Mac/Linux)
+```
+
+Windows
+```bash
+venv/Scripts/activate (
+```
+
+(Mac/Linux)
+```bash
+source venv/bin/activate 
+```
+
+```bash
 pip install -r requirements.txt
 ```
 
