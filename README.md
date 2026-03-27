@@ -1,7 +1,6 @@
 # swissimage_annotator
 This project was crated for tasks of annotating image data from https://www.swisstopo.admin.ch/de/geodata/images/ortho/swissimage10.html.
 
-
 # Setup
 
 ## Docker
@@ -16,18 +15,24 @@ docker run -p 5555:5555 -v $(pwd)/static/data:/app/static/data swissimage
 ### Create environment
 
 #### conda env
+```bash
 conda env create -f environment.yml
+```
 
 #### venv
+
+```bash
 python -m venv venv
-
 venv/Scripts/activate (Windows) / source venv/bin/activate (Mac/Linux)
-
 pip install -r requirements.txt
+```
 
 
 ### Run the project
+
+```bash
 python app.py
+```
 
 ## Workflow
 1. Create a project
