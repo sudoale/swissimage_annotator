@@ -9,6 +9,20 @@
         <input id="projectName" type="text" class="form-control" placeholder="Projectname" aria-label="Username" aria-describedby="basic-addon1">
         <button id="createProject" type="button" class="btn btn-primary">Create</button>
     </div>
-</div>
+
+    <!-- Project list goes here (inside the block) -->
+    <h2>Existing Projects</h2>
+    <p>Debug: projects variable = {{ projects }}</p>
+    <div id="project-list">
+        {% for project in projects %}
+        <div style="margin-bottom: 10px;">
+            <span>{{ project }}</span>
+            <button class="crop-btn" data-project="{{ project }}">Crop .tif files</button>
+            <span class="crop-status" id="status-{{ project }}"></span>
+        </div>
+        {% endfor %}
+    </div>
+
     <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+</div>
 {% endblock %}

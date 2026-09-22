@@ -21,3 +21,26 @@ createProjectButton.addEventListener("click", () => {
         }
     })
 });
+
+document.querySelectorAll('.crop-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const project = this.dataset.project;
+        const statusSpan = document.getElementById('status-' + project);
+        statusSpan.textContent = 'Cropping...';
+        fetch('/crop_project/' + project, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                statusSpan.textContent = '✅ ' + data.message;
+            } else {
+                statusSpan.textContent = '❌ Error: ' + data.message;
+            }
+        })
+        .catch(err => {
+            statusSpan.textContent = '❌ Request failed.';
+        });
+    });
+});
